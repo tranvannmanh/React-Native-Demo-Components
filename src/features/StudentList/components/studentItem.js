@@ -1,7 +1,9 @@
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useState, useRef } from 'react'
 import { Octicons, AntDesign } from '@expo/vector-icons';
-import { axiosIns, getStudentsReq } from '../../../config/api';
+import { axiosIns, getStudentsReq, getToken } from '../../../config/api';
+import { useNavigation } from '@react-navigation/native';
+import { routes } from '../../../routes';
 
 
 const StudentItem = ({ item, handleDelete = (id) => { } }) => {
@@ -10,6 +12,7 @@ const StudentItem = ({ item, handleDelete = (id) => { } }) => {
   const [value, setValue] = useState(name)
   const [editable, setEditable] = useState(false)
   const inputRef = useRef()
+  const navigation = useNavigation()
 
   const handleEdit = () => {
     setEditable(true)
@@ -19,7 +22,8 @@ const StudentItem = ({ item, handleDelete = (id) => { } }) => {
 
   const handleUpdateName = async () => {
     try {
-      const res = await axiosIns.put('update', {
+      const token = await getToken()
+      const res = await axiosIns(token).put('/api/student/update', {
         name: value,
         dateOfBirth: dateOfBirth,
         studentCode: studentCode,
@@ -43,11 +47,14 @@ const StudentItem = ({ item, handleDelete = (id) => { } }) => {
   }
 
   return (
-    <View style={{
-      flexDirection: 'row',
-      marginVertical: 4
-      // alignItems: 'center'
-    }}>
+    <Pressable
+      style={{
+        flexDirection: 'row',
+        marginVertical: 4
+        // alignItems: 'center'
+      }}
+      onPress={() => navigation.navigate(routes.DetailWithListPoint, { studentId: id })}
+    >
       {/* <Text>TRAN VAN A</Text> */}
       <TextInput
         ref={inputRef}
@@ -71,7 +78,7 @@ const StudentItem = ({ item, handleDelete = (id) => { } }) => {
           <AntDesign name="closecircle" size={18} color="red" />
         </Pressable>
       </View>
-    </View>
+    </Pressable>
   )
 }
 

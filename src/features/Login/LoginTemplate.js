@@ -1,6 +1,6 @@
 import { Image, Text, TouchableOpacity, View } from "react-native"
 
-const LoginTemplate = ({navigation}) => {
+const LoginTemplate = ({ navigation }) => {
   return (
     <View style={{
       flex: 1,
@@ -48,9 +48,9 @@ const LoginTemplate = ({navigation}) => {
           marginVertical: 16,
         }}>
           <Text style={{
-              fontWeight: 'bold',
-              color: 'white',
-            }}
+            fontWeight: 'bold',
+            color: 'white',
+          }}
           >LOGIN</Text>
         </View>
       </TouchableOpacity>

@@ -1,7 +1,7 @@
 import { FlatList, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import StudentItem from './components/studentItem'
-import { axiosIns, getStudentsReq } from '../../config/api'
+import { axiosIns, getStudentsReq, getToken } from '../../config/api'
 
 const StudentList = () => {
   const [studentds, setStudentds] = useState([])
@@ -17,7 +17,8 @@ const StudentList = () => {
 
   const handleDeleteStudent = async (id) => {
     try {
-      const res = await axiosIns.delete(`delete/${id}`)
+      const token = await getToken()
+      const res = await axiosIns(token).delete(`/api/student/delete/${id}`)
       console.log(res.status);
       if (res.status <= 299) {
         const studentRefresh = studentds.filter(value => value.id !== id)
@@ -31,7 +32,8 @@ const StudentList = () => {
 
   const handleAddNewStudent = async () => {
     try {
-      const res = await axiosIns.post('create-student', {
+      const token = await getToken()
+      const res = await axiosIns(token).post('api/student/create-student', {
         name: newStudent,
         dateOfBirth: String(new Date().toISOString()),
         studentCode: String(Math.floor(Math.random() * 100000 + 10000)),
@@ -62,7 +64,7 @@ const StudentList = () => {
       <View style={{
         flexDirection: 'row',
         position: 'absolute',
-        // width: '100%',
+        left: 20,
         bottom: 20,
         right: 20,
         marginHorizontal: 10
@@ -71,16 +73,16 @@ const StudentList = () => {
           placeholder='Ten sinh vien'
           value={newStudent}
           onChangeText={value => setNewStudent(value)}
-          style={{ flex: 1, borderWidth: 1, borderColor: 'blue' }} />
-        <Pressable onPress={handleAddNewStudent} >
-          <View style={{
-            padding: 8,
-            backgroundColor: 'blue',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}>
-            <Text style={{ fontSize: 20, color: 'white' }}>+</Text>
-          </View>
+          style={{ flex: 1, borderWidth: 1, borderColor: 'lightblue', paddingLeft: 10 }} />
+        <Pressable onPress={handleAddNewStudent} style={{
+          paddingHorizontal: 16,
+          backgroundColor: 'green',
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderWidth: 1,
+          borderColor: 'green'
+        }}>
+          <Text style={{ fontSize: 20, color: 'white' }}>+</Text>
         </Pressable>
       </View>
     </View>
