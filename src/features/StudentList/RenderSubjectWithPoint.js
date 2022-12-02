@@ -1,6 +1,6 @@
 import { View, Text, TextInput, TouchableOpacity } from "react-native"
 import { useRef, useState } from "react"
-import { studentDeleteSubjectReq, updatePointReq } from "../../config/api"
+import { updatePointReq } from "../../config/api"
 
 const RenderSubjectWithPoint = ({ item, handleDeleteSubject = (subjectId) => { } }) => {
   const { subjectName, point, studentId, id } = item
@@ -16,6 +16,13 @@ const RenderSubjectWithPoint = ({ item, handleDeleteSubject = (subjectId) => { }
     else {
       await handleUpdatePoint()
       setEditting(false)
+    }
+  }
+
+  const handleUpdatePoint = async () => {
+    const res = await updatePointReq(studentId, id, newPoint)
+    if (res.status >= 300) {
+      setNewPoint(point)
     }
   }
 
