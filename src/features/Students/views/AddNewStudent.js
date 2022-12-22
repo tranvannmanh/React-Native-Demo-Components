@@ -10,7 +10,7 @@ const AddNewStudent = ({ navigation }) => {
   const [className, setClassName] = useState('')
   const [email, setEmail] = useState('')
   const [address, setAddress] = useState('')
-  const [first, setFirst] = useState('')
+  const [error, setError] = useState('')
   const addressRef = useRef()
 
   const handleCancel = () => {
